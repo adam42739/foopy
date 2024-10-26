@@ -50,6 +50,10 @@ def _years_get(year: int) -> dict[str, int]:
 
 class NFLWeek:
     """
+    =======
+    NFLWeek
+    =======
+    
     Simple class for keeping track of NFL weeks.
     """
 
