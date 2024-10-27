@@ -7,6 +7,7 @@ import os
 
 DATA_NAMES = typing.Literal["pbp", "draft", "roster", "player", "schedule"]
 DATA_NAMES_VALUES = {"pbp", "draft", "roster", "player", "schedule"}
+YEARS_DATA_NAMES = {"pbp", "draft", "roster", "schedule"}
 
 # =======================
 # Configuration Functions
@@ -49,7 +50,7 @@ def set_cache_path(path: str):
             config_data["cache_dir"] = path
             _dump_config_data(config_data)
         else:
-            raise ValueError(f"Path \"{path}\" does not exist.")
+            raise ValueError(f'Path "{path}" does not exist.')
     else:
         raise ValueError("Path must be a string.")
 
@@ -104,10 +105,13 @@ def _load_metadata(data_name: DATA_NAMES) -> dict[int, bool] | bool:
         with open(path, "r") as file:
             full_mdata = json.load(file)
         if data_name in full_mdata:
-            mdata = {}
-            for year in full_mdata[data_name]:
-                mdata[int(year)] = full_mdata[data_name][year]
-            return mdata
+            if data_name in YEARS_DATA_NAMES:
+                mdata = {}
+                for year in full_mdata[data_name]:
+                    mdata[int(year)] = full_mdata[data_name][year]
+                return mdata
+            else:
+                return full_mdata[data_name]
         else:
             return {}
     else:
