@@ -43,12 +43,15 @@ def set_cache_path(path: str):
     path : str
         Cache directory
     """
-    if os.path.exists(path):
-        config_data = _load_config_data()
-        config_data["cache_dir"] = path
-        _dump_config_data(config_data)
+    if isinstance(path, str):
+        if os.path.exists(path):
+            config_data = _load_config_data()
+            config_data["cache_dir"] = path
+            _dump_config_data(config_data)
+        else:
+            raise ValueError(f"Path \"{path}\" does not exist.")
     else:
-        raise ValueError(f"Path {path} does not exist.")
+        raise ValueError("Path must be a string.")
 
 
 def _load_cache_path() -> str:
