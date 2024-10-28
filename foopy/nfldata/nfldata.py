@@ -8,6 +8,13 @@ import os
 DATA_NAMES = typing.Literal["pbp", "draft", "roster", "player", "schedule"]
 DATA_NAMES_VALUES = {"pbp", "draft", "roster", "player", "schedule"}
 YEARS_DATA_NAMES = {"pbp", "draft", "roster", "schedule"}
+NFL_DATA_FUNCS = {
+    "pbp": nfl_data_py.import_pbp_data,
+    "draft": nfl_data_py.import_draft_picks,
+    "roster": nfl_data_py.import_weekly_rosters,
+    "player": nfl_data_py.import_players,
+    "schedule": nfl_data_py.import_schedules,
+}
 
 # =======================
 # Configuration Functions
@@ -141,40 +148,6 @@ def _dump_metadata(data_name: DATA_NAMES, mdata: dict[int, bool] | bool):
         json.dump(full_mdata, file)
 
 
-# ========================
-# NFL Data Function Getter
-# ========================
-
-
-def _nfl_func(
-    data_name: DATA_NAMES,
-) -> typing.Callable[[list[int] | None], pandas.DataFrame]:
-    """
-    Get the `nfl_data_py` function corresponding to `data_name`.
-
-    Parameters
-    ----------
-
-    data_name : {"pbp", "draft", "roster", "player", "schedule"}
-        `data_name` to get the function for.
-
-    Returns
-    -------
-
-    out : ((list[int] | None) -> DataFrame)
-    """
-    if data_name == "pbp":
-        return nfl_data_py.import_pbp_data
-    elif data_name == "draft":
-        return nfl_data_py.import_draft_picks
-    elif data_name == "roster":
-        return nfl_data_py.import_weekly_rosters
-    elif data_name == "player":
-        return nfl_data_py.import_players
-    elif data_name == "schedule":
-        return nfl_data_py.import_schedules
-
-
 # ==================
 # Load Sub-Functions
 # ==================
@@ -184,7 +157,6 @@ def _nfl_func(
 
 def _load_years(
     data_name: DATA_NAMES,
-    nfl_func: typing.Callable[[list[int]], pandas.DataFrame],
     years: list[int],
     update: bool,
     mdata: dict[int],
@@ -198,9 +170,6 @@ def _load_years(
     data_name : {"pbp", "draft", "roster", "player", "schedule"}
         `data_name` to get the data for.
 
-    nfl_func : ((list[int] | None) -> DataFrame)
-        The function associated with `data_name`
-
     years : list[int]
         Years to get the data for.
 
@@ -213,7 +182,7 @@ def _load_years(
     dfs = []
     for year in years:
         if year not in mdata or (year == max(mdata) and update):
-            df = nfl_func([year])
+            df = NFL_DATA_FUNCS[data_name]([year])
             _dump_cached(df, data_name + "-" + str(year))
             mdata[year] = True
             dfs.append(df)
@@ -227,7 +196,6 @@ def _load_years(
 
 def _load_non_years(
     data_name: DATA_NAMES,
-    nfl_func: typing.Callable[[], pandas.DataFrame],
     update: bool,
     mdata: bool,
 ) -> pandas.DataFrame:
@@ -240,9 +208,6 @@ def _load_non_years(
     data_name : {"pbp", "draft", "roster", "player", "schedule"}
         `data_name` to get the data for.
 
-    nfl_func : ((list[int] | None) -> DataFrame)
-        The function associated with `data_name`
-
     update : bool
         Whether or not the cached NFL data should be updated.
 
@@ -253,7 +218,7 @@ def _load_non_years(
         df = _load_cached(data_name)
         return df
     else:
-        df = nfl_func()
+        df = NFL_DATA_FUNCS[data_name]()
         _dump_cached(df, data_name)
         _dump_metadata(data_name, True)
         return df
@@ -320,8 +285,7 @@ def load(
     _load_validate_years(years)
     _load_validate_update(update)
     mdata = _load_metadata(data_name)
-    func = _nfl_func(data_name)
     if years:
-        return _load_years(data_name, func, years, update, mdata)
+        return _load_years(data_name, years, update, mdata)
     else:
-        return _load_non_years(data_name, func, update, mdata)
+        return _load_non_years(data_name, update, mdata)
