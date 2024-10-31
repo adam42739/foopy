@@ -16,6 +16,6 @@ def test_maptize():
         idmap = IDMap()
         idmap.append(demap)
         idmap.maptize(idmap.df.columns.to_list())
-        map = map.sort_values(by="id0")
-        demap = idmap.df.sort_values(by="id0")
+        map = map.sort_values(by="id0").reset_index(drop=True)
+        demap = idmap.df.sort_values(by="id0").reset_index(drop=True)
         assert map.equals(demap)
