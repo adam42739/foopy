@@ -1,4 +1,4 @@
-from ...idmap import IDMap
+from ...nfldata.idmap import IDMap
 import random
 import pandas
 import os

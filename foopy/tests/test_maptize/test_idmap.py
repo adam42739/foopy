@@ -1,4 +1,4 @@
-from ...idmap import IDMap
+from ...nfldata.idmap import IDMap
 import pandas
 from .create_tests import TEST_MAPS_DIR
 import os
