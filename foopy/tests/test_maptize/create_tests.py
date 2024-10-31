@@ -2,6 +2,7 @@ from ...nfldata.idmap import IDMap
 import random
 import pandas
 import os
+import tqdm
 
 
 def _create_map(N_id: int, N_row: int) -> pandas.DataFrame:
@@ -18,7 +19,7 @@ def _demaptize(map: pandas.DataFrame) -> pandas.DataFrame:
     """
     Demaptize the given `map`.
     """
-    for index, series in map.iterrows():
+    for index, series in tqdm.tqdm(map.iterrows(), total=len(map), desc="Demaptizing"):
         for iteration in range(random.randrange(0, 5)):
             if iteration == 1 or 2:
                 split_index = random.randrange(0, len(map.columns) - 1)

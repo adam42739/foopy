@@ -5,13 +5,17 @@ import os
 
 
 def test_maptize():
-    map_ids = ["map1"]
+    map_ids = ["map1", "map2"]
     for map_id in map_ids:
-        map = pandas.read_csv(os.path.join(TEST_MAPS_DIR, f"{map_id}-map.csv"))
-        demap = pandas.read_csv(os.path.join(TEST_MAPS_DIR, f"{map_id}-demap.csv"))
+        map = pandas.read_csv(
+            os.path.join(TEST_MAPS_DIR, f"{map_id}-map.csv"), index_col=0, dtype=str
+        )
+        demap = pandas.read_csv(
+            os.path.join(TEST_MAPS_DIR, f"{map_id}-demap.csv"), index_col=0, dtype=str
+        )
         idmap = IDMap()
         idmap.append(demap)
-        idmap.maptize()
+        idmap.maptize(idmap.df.columns.to_list())
         map = map.sort_values(by="id0")
-        demap = map.sort_values(by="id0")
-        assert map.equals(idmap.df)
+        demap = idmap.df.sort_values(by="id0")
+        assert map.equals(demap)
