@@ -61,9 +61,13 @@ class IDMap:
         dupes_mask = self.append_df.duplicated(keep=False)
         dupes = self.append_df[dupes_mask]
         dupes = dupes.drop_duplicates()
-        self.append_df = self.append_df.drop_duplicates().reset_index(drop = True)
+        self.append_df = self.append_df.drop_duplicates().reset_index(drop=True)
         new_maps = pandas.concat([new_maps, dupes]).drop_duplicates(keep=False)
         self.df = pandas.concat([self.df, new_maps]).reset_index(drop=True)
+
+    # =================
+    # Maptize Functions
+    # =================
 
     def _get_column_dupes_df(self, column: str) -> pandas.DataFrame:
         """
