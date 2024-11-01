@@ -26,3 +26,4 @@ from . import pbp
 from . import player
 from . import roster
 from . import schedule
+from . import map

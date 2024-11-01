@@ -131,6 +131,7 @@ COLUMN_DRAFT_PATH = COLUMN_PATH_BASE + "draft.py"
 COLUMN_PBP_PATH = COLUMN_PATH_BASE + "pbp.py"
 COLUMN_SCHEDULE_PATH = COLUMN_PATH_BASE + "schedule.py"
 COLUMN_ROSTER_PATH = COLUMN_PATH_BASE + "roster.py"
+COLUMN_MAP_PATH = COLUMN_PATH_BASE + "map.py"
 
 COLUMN_PATH_DICT = {
     "pbp": COLUMN_PBP_PATH,
@@ -138,6 +139,7 @@ COLUMN_PATH_DICT = {
     "player": COLUMN_PLAYER_PATH,
     "schedule": COLUMN_SCHEDULE_PATH,
     "roster": COLUMN_ROSTER_PATH,
+    "map": COLUMN_MAP_PATH,
 }
 
 NFL_DATA_COLS = {
@@ -146,6 +148,7 @@ NFL_DATA_COLS = {
     "roster": _create_globals.ROSTER_COLS,
     "player": _create_globals.PLAYER_COLS,
     "schedule": _create_globals.SCHEDULE_COLS,
+    "map": _create_globals.MAP_COLS,
 }
 
 
@@ -176,9 +179,9 @@ class ColumnCreator:
         return "\n".join(lines)
 
 
-def create_cols():
+def create_cols(col_files: dict[str, set[str]] = NFL_DATA_COLS):
     tables = _get_all_nflverse_tables()
-    for data_type in NFL_DATA_COLS:
+    for data_type in col_files:
         creator = ColumnCreator(data_type)
         creator.load_columns(tables)
         creator.write(COLUMN_PATH_DICT[data_type])

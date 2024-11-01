@@ -6,8 +6,8 @@ import os
 from . import cols
 
 
-DATA_NAMES = typing.Literal["pbp", "draft", "roster", "player", "schedule"]
-DATA_NAMES_VALUES = {"pbp", "draft", "roster", "player", "schedule"}
+DATA_NAMES = typing.Literal["pbp", "draft", "roster", "player", "schedule", "map"]
+DATA_NAMES_VALUES = {"pbp", "draft", "roster", "player", "schedule", "map"}
 YEARS_DATA_NAMES = {"pbp", "draft", "roster", "schedule"}
 NFL_DATA_FUNCS = {
     "pbp": nfl_data_py.import_pbp_data,
@@ -15,6 +15,7 @@ NFL_DATA_FUNCS = {
     "roster": nfl_data_py.import_weekly_rosters,
     "player": nfl_data_py.import_players,
     "schedule": nfl_data_py.import_schedules,
+    "map": nfl_data_py.import_ids,
 }
 
 # =======================
@@ -99,7 +100,7 @@ def _load_metadata(data_name: DATA_NAMES) -> dict[int, bool] | bool:
     Parameters
     ----------
 
-    data_name : {"pbp", "draft", "roster", "player", "schedule"}
+    data_name : {"pbp", "draft", "roster", "player", "schedule", "map"}
         `data_name` to get the function for.
 
     Returns
@@ -133,7 +134,7 @@ def _dump_metadata(data_name: DATA_NAMES, mdata: dict[int, bool] | bool):
     Parameters
     ----------
 
-    data_name : {"pbp", "draft", "roster", "player", "schedule"}
+    data_name : {"pbp", "draft", "roster", "player", "schedule", "map"}
         `data_name` to get the function for.
 
     mdata : dict[int, bool] | bool
@@ -168,7 +169,7 @@ def _load_years(
     Parameters
     ----------
 
-    data_name : {"pbp", "draft", "roster", "player", "schedule"}
+    data_name : {"pbp", "draft", "roster", "player", "schedule", "map"}
         `data_name` to get the data for.
 
     years : list[int]
@@ -206,7 +207,7 @@ def _load_non_years(
     Parameters
     ----------
 
-    data_name : {"pbp", "draft", "roster", "player", "schedule"}
+    data_name : {"pbp", "draft", "roster", "player", "schedule", "map"}
         `data_name` to get the data for.
 
     update : bool
@@ -432,6 +433,28 @@ PBP_ID_COLUMNS = [
     "nflverse_game_id",
     "old_game_id_y",
 ]
+MAP_ID_COLUMNS = [
+    "rotoworld_id",
+    "cfbref_id",
+    "ktc_id",
+    "nfl_id",
+    "gsis_id",
+    "rotowire_id",
+    "pfr_id",
+    "pff_id",
+    "yahoo_id",
+    "fantasypros_id",
+    "swish_id",
+    "mfl_id",
+    "sportradar_id",
+    "sleeper_id",
+    "fantasy_data_id",
+    "espn_id",
+    "stats_id",
+    "cbs_id",
+    "stats_global_id",
+    "fleaflicker_id",
+]
 
 ID_COLUMNS = {
     "pbp": PBP_ID_COLUMNS,
@@ -439,6 +462,7 @@ ID_COLUMNS = {
     "roster": ROSTER_ID_COLUMNS,
     "schedule": SCHEDULE_ID_COLUMNS,
     "player": PLAYER_ID_COLUMNS,
+    "map": MAP_ID_COLUMNS,
 }
 
 
@@ -467,7 +491,7 @@ def load(
     Parameters
     ----------
 
-    data_name : {"pbp", "draft", "roster", "player", "schedule"}
+    data_name : {"pbp", "draft", "roster", "player", "schedule", "map"}
         `data_name` of the dataset to get.
 
     years : list[int] | None = None
