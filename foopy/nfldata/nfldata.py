@@ -3,6 +3,7 @@ import typing
 import pandas
 import json
 import os
+from . import cols
 
 
 DATA_NAMES = typing.Literal["pbp", "draft", "roster", "player", "schedule"]
@@ -250,6 +251,87 @@ def _load_validate_update(update: bool):
         raise ValueError("update arguments passed to load() invalid.")
 
 
+# ==========================
+# Team Abbreviation Unifying
+# ==========================
+
+TEAM_ABBRS = {}
+TEAM_ABBRS_PATH = os.path.join(os.path.dirname(__file__), "abbrs.json")
+
+
+def _load_team_abbrs():
+    """
+    Load the team abbreviations dictionary to the global `TEAM_ABBRS` constant.
+    """
+    with open(TEAM_ABBRS_PATH, "r") as file:
+        abbrs = json.load(file)
+        for abbr in abbrs:
+            TEAM_ABBRS[abbr] = abbrs[abbr]
+
+
+_load_team_abbrs()
+
+
+def _get_team_abbr(abbr: str) -> str:
+    if abbr in TEAM_ABBRS:
+        return TEAM_ABBRS[abbr]
+    else:
+        return None
+
+
+# =================
+# Draft ID Creation
+# =================
+
+
+DRAFT_IDS_DATA_NAMES = typing.Literal["draft", "player", "roster"]
+DRAFT_IDS_DATA_NAMES_VALUES = {"draft", "player", "roster"}
+
+
+def _create_draft_id(
+    data_name: DRAFT_IDS_DATA_NAMES, df: pandas.DataFrame
+) -> pandas.DataFrame:
+    """
+    Create the draft ID. Not gauranteed to be unique or match (player names may be displayed differently depending on source).
+
+    `[Team abbreviation][Overall draft number][Player name (no spaces, periods, hyphens, etc.)]`
+
+    Example:
+
+    * `CAR1BryceYoung`
+    * `HOU2CJStroud`
+    """
+    team = None
+    overall = None
+    name = None
+    if data_name == "draft":
+        team = df[cols.draft.Team.header]
+        round = df[cols.draft.Round.header].fillna(0)
+        pick = df[cols.draft.Pick.header].fillna(0)
+        overall = pick * round
+        name = df[cols.draft.PfrPlayerName.header]
+    elif data_name == "player":
+        team = df[cols.player.DraftClub.header]
+        overall = df[cols.player.DraftNumber.header].fillna(0)
+        name = df[cols.player.DisplayName.header]
+    elif data_name == "roster":
+        team = df[cols.roster.DraftClub.header]
+        overall = df[cols.roster.DraftNumber.header].fillna(0)
+        name = df[cols.roster.PlayerName.header]
+    team = team.apply(_get_team_abbr)
+    overall = overall.astype(int).astype(str).replace("0", None)
+    name = (
+        name.str.replace(" ", "")
+        .str.replace(".", "")
+        .str.replace("-", "")
+        .str.replace("'", "")
+    )
+    df[cols.draft.DraftId.header] = (team.notna() & overall.notna() & name.notna()) * (
+        team + overall + name
+    )
+    return df
+
+
 # =============
 # Load Function
 # =============
@@ -292,7 +374,11 @@ def load(
     _load_validate_years(years)
     _load_validate_update(update)
     mdata = _load_metadata(data_name)
+    df = pandas.DataFrame()
     if years:
-        return _load_years(data_name, years, update, mdata)
+        df = _load_years(data_name, years, update, mdata)
     else:
-        return _load_non_years(data_name, update, mdata)
+        df = _load_non_years(data_name, update, mdata)
+    if data_name in DRAFT_IDS_DATA_NAMES_VALUES:
+        df = _create_draft_id(data_name, df)
+    return df

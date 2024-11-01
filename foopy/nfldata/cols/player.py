@@ -1,3 +1,11 @@
+class DraftId:
+    """
+    FooPy created draft ID. Not guaranteed to be unique.
+    """
+
+    header = "draft_id"
+
+
 class Weight:
     """
     Official weight, in pounds
