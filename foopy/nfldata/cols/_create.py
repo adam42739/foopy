@@ -124,6 +124,8 @@ def _format_column_class(column: str) -> str:
 # =========================
 
 
+DATA_NAME = typing.Literal["pbp", "player", "draft", "schedule", "roster", "map"]
+
 COLUMN_PATH_BASE = "foopy/nfldata/cols/"
 
 COLUMN_PLAYER_PATH = COLUMN_PATH_BASE + "player.py"
@@ -151,16 +153,25 @@ NFL_DATA_COLS = {
     "map": _create_globals.MAP_COLS,
 }
 
+ADDITIONAL_ADDS = {
+    "draft": {"draft_id": "FooPy created draft ID. Not guaranteed to be unique."},
+    "roster": {"draft_id": "FooPy created draft ID. Not guaranteed to be unique."},
+    "player": {"draft_id": "FooPy created draft ID. Not guaranteed to be unique."},
+}
+
 
 class ColumnCreator:
-    def __init__(
-        self, data_type: typing.Literal["pbp", "player", "draft", "schedule", "roster"]
-    ):
-        self.col_descs = {column: None for column in NFL_DATA_COLS[data_type]}
+    def __init__(self, data_name: DATA_NAME):
+        self.col_descs = {column: None for column in NFL_DATA_COLS[data_name]}
 
     def load_columns(self, tables: list[dict[str, str]]):
         for column in self.col_descs:
             self.col_descs[column] = _tables_find_column(tables, column)
+
+    def add_additional_columns(self, data_name: DATA_NAME):
+        if data_name in ADDITIONAL_ADDS:
+            for key, value in ADDITIONAL_ADDS[data_name].items():
+                self.col_descs[key] = value
 
     def write(self, file_path: str):
         with open(file_path, "w") as file:
@@ -173,15 +184,15 @@ class ColumnCreator:
             lines.append('\t"""')
             lines.append("\t" + self.col_descs[column])
             lines.append('\t"""')
-            lines.append("\n")
             lines.append('\theader = "' + column + '"')
-            lines.append("\n\n")
+            lines.append("\n")
         return "\n".join(lines)
 
 
 def create_cols(col_files: dict[str, set[str]] = NFL_DATA_COLS):
     tables = _get_all_nflverse_tables()
-    for data_type in col_files:
-        creator = ColumnCreator(data_type)
+    for data_name in col_files:
+        creator = ColumnCreator(data_name)
         creator.load_columns(tables)
-        creator.write(COLUMN_PATH_DICT[data_type])
+        creator.add_additional_columns(data_name)
+        creator.write(COLUMN_PATH_DICT[data_name])
