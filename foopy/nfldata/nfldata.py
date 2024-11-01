@@ -332,6 +332,125 @@ def _create_draft_id(
     return df
 
 
+# ==================
+# ID Column Cleaning
+# ==================
+
+DRAFT_ID_COLUMNS = [
+    "gsis_id",
+    "pfr_player_id",
+    "cfb_player_id",
+    "draft_id",
+]
+ROSTER_ID_COLUMNS = [
+    "player_id",
+    "espn_id",
+    "sportradar_id",
+    "yahoo_id",
+    "rotowire_id",
+    "pff_id",
+    "pfr_id",
+    "fantasy_data_id",
+    "sleeper_id",
+    "esb_id",
+    "gsis_it_id",
+    "smart_id",
+    "draft_id",
+]
+PLAYER_ID_COLUMNS = [
+    "esb_id",
+    "gsis_id",
+    "current_team_id",
+    "gsis_it_id",
+    "smart_id",
+    "draft_id",
+]
+SCHEDULE_ID_COLUMNS = [
+    "game_id",
+    "old_game_id",
+    "nfl_detail_id",
+    "away_qb_id",
+    "home_qb_id",
+    "stadium_id",
+]
+PBP_ID_COLUMNS = [
+    "play_id",
+    "game_id",
+    "old_game_id_x",
+    "td_player_id",
+    "passer_player_id",
+    "receiver_player_id",
+    "rusher_player_id",
+    "lateral_receiver_player_id",
+    "lateral_rusher_player_id",
+    "lateral_sack_player_id",
+    "interception_player_id",
+    "lateral_interception_player_id",
+    "punt_returner_player_id",
+    "lateral_punt_returner_player_id",
+    "kickoff_returner_player_id",
+    "lateral_kickoff_returner_player_id",
+    "punter_player_id",
+    "kicker_player_id",
+    "own_kickoff_recovery_player_id",
+    "blocked_player_id",
+    "tackle_for_loss_1_player_id",
+    "tackle_for_loss_2_player_id",
+    "qb_hit_1_player_id",
+    "qb_hit_2_player_id",
+    "forced_fumble_player_1_player_id",
+    "forced_fumble_player_2_player_id",
+    "solo_tackle_1_player_id",
+    "solo_tackle_2_player_id",
+    "assist_tackle_1_player_id",
+    "assist_tackle_2_player_id",
+    "assist_tackle_3_player_id",
+    "assist_tackle_4_player_id",
+    "tackle_with_assist_1_player_id",
+    "tackle_with_assist_2_player_id",
+    "pass_defense_1_player_id",
+    "pass_defense_2_player_id",
+    "fumbled_1_player_id",
+    "fumbled_2_player_id",
+    "fumble_recovery_1_player_id",
+    "fumble_recovery_2_player_id",
+    "sack_player_id",
+    "half_sack_1_player_id",
+    "half_sack_2_player_id",
+    "penalty_player_id",
+    "safety_player_id",
+    "nfl_api_id",
+    "drive_play_id_started",
+    "drive_play_id_ended",
+    "stadium_id",
+    "passer_id",
+    "rusher_id",
+    "receiver_id",
+    "id",
+    "fantasy_player_id",
+    "fantasy_id",
+    "nflverse_game_id",
+    "old_game_id_y",
+]
+
+ID_COLUMNS = {
+    "pbp": PBP_ID_COLUMNS,
+    "draft": DRAFT_ID_COLUMNS,
+    "roster": ROSTER_ID_COLUMNS,
+    "schedule": SCHEDULE_ID_COLUMNS,
+    "player": PLAYER_ID_COLUMNS,
+}
+
+
+def _string_all_IDs(data_name: DATA_NAMES, df: pandas.DataFrame) -> pandas.DataFrame:
+    """
+    Ensure all ID related columns are dtype string.
+    """
+    for column in ID_COLUMNS[data_name]:
+        df[column] = df[column].astype(str)
+    return df
+
+
 # =============
 # Load Function
 # =============
@@ -381,4 +500,5 @@ def load(
         df = _load_non_years(data_name, update, mdata)
     if data_name in DRAFT_IDS_DATA_NAMES_VALUES:
         df = _create_draft_id(data_name, df)
+    df = _string_all_IDs(data_name, df)
     return df
