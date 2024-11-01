@@ -34,7 +34,7 @@ def _demaptize(map: pandas.DataFrame) -> pandas.DataFrame:
     return map
 
 
-TEST_MAPS_DIR = os.path.join(os.path.dirname(__file__), "test_maps/")
+TEST_MAPS_DIR = os.path.join(os.path.dirname(__file__), "data/")
 
 
 def create_maptize_test(N_id: int, N_row: int, map_id: str):
