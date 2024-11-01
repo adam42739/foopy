@@ -189,7 +189,7 @@ def _load_years(
         else:
             df = _load_cached(data_name + "-" + str(year))
             dfs.append(df)
-    _dump_metadata(data_name, mdata)
+        _dump_metadata(data_name, mdata)
     df = pandas.concat(dfs)
     return df
 
@@ -271,6 +271,13 @@ def load(
 
     years : list[int] | None = None
         List of integers for the years to get the data for. `None` if the `nfl_data_py` function does not take years as a parameter.
+
+        Required for:
+
+        * `pbp`
+        * `draft`
+        * `roster`
+        * `schedule`
 
     update : bool = False
         Whether or not to update the data in the cache.
