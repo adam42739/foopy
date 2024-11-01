@@ -10,32 +10,36 @@ class IDMap:
 
     def __init__(self):
         self.df = pandas.DataFrame()
+        self.append_df = pandas.DataFrame()
 
     # ============
     # IO Functions
     # ============
 
-    def load(self, path: str):
+    def load(self, dir_path: str, fname: str):
         """
         Load the `IDMap` from the given file path.
         """
-        if isinstance(path, str):
-            if os.path.exists(path):
-                self.df = pandas.read_csv(path, dtype=str)
+        if isinstance(dir_path, str) and isinstance(fname, str):
+            df_path = os.path.join(dir_path, fname, "-df.csv")
+            append_path = os.path.join(dir_path, fname, "-append.csv")
+            if os.path.exists(df_path) and os.path.exists(append_path):
+                self.df = pandas.read_csv(df_path, dtype=str)
+                self.append_df = pandas.read_csv(append_path, dtype=str)
             else:
-                raise ValueError(f'Path "{path}" does not exist.')
+                raise ValueError(f'Path "{df_path}" does not exist.')
         else:
             raise ValueError("Path must be a string")
 
-    def dump(self, path: str):
+    def dump(self, dir_path: str, fname: str):
         """
         Dump the `IDMap` to the given file path.
         """
-        if isinstance(path, str):
-            if os.path.exists(path):
-                self.df.to_csv(path)
-            else:
-                raise ValueError(f'Path "{path}" does not exist.')
+        if isinstance(dir_path, str) and isinstance(fname, str):
+            df_path = os.path.join(dir_path, fname, "-df.csv")
+            append_path = os.path.join(dir_path, fname, "-append.csv")
+            self.df.to_csv(df_path)
+            self.append_df.to_csv(append_path)
         else:
             raise ValueError("Path must be a string")
 
@@ -53,7 +57,13 @@ class IDMap:
         new_maps : DataFrame
             New maps to append.
         """
-        self.df = pandas.concat([self.df, new_maps])
+        self.append_df = pandas.concat([self.append_df, new_maps])
+        dupes_mask = self.append_df.duplicated(keep=False)
+        dupes = self.append_df[dupes_mask]
+        dupes = dupes.drop_duplicates()
+        self.append_df = self.append_df.drop_duplicates().reset_index(drop = True)
+        new_maps = pandas.concat([new_maps, dupes]).drop_duplicates(keep=False)
+        self.df = pandas.concat([self.df, new_maps]).reset_index(drop=True)
 
     def _get_column_dupes_df(self, column: str) -> pandas.DataFrame:
         """
