@@ -321,10 +321,10 @@ def _create_draft_id(
     team = team.apply(_get_team_abbr)
     overall = overall.astype(int).astype(str).replace("0", None)
     name = (
-        name.str.replace(" ", "")
-        .str.replace(".", "")
-        .str.replace("-", "")
-        .str.replace("'", "")
+        name.str.replace(" ", "", regex=False)
+        .str.replace(".", "", regex=False)
+        .str.replace("-", "", regex=False)
+        .str.replace("'", "", regex=False)
     )
     df[cols.draft.DraftId.header] = (team.notna() & overall.notna() & name.notna()) * (
         team + overall + name
