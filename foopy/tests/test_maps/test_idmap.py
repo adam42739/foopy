@@ -19,3 +19,23 @@ def test_maptize():
         map = map.sort_values(by="id0").reset_index(drop=True)
         demap = idmap.df.sort_values(by="id0").reset_index(drop=True)
         assert map.equals(demap)
+
+
+append1 = pandas.DataFrame({"A": [1, 2, 3], "B": [1, 2, 3]})
+append2 = pandas.DataFrame(
+    {"A": [1, 2, 4, 5], "B": [1, 2, 4, 5], "C": [None, None, 4, 5]}
+)
+map_value = pandas.DataFrame(
+    {"A": [1, 2, 3, 4, 5], "B": [1, 2, 3, 4, 5], "C": [None, None, None, 4, 5]}
+)
+append_value = pandas.DataFrame(
+    {"A": [1, 2, 3, 4, 5], "B": [1, 2, 3, 4, 5], "C": [None, None, None, 4, 5]}
+)
+
+
+def test_append():
+    map = IDMap()
+    map.append(append1)
+    map.append(append2)
+    assert map.df.equals(map_value)
+    assert map.append_df.equals(append_value)
