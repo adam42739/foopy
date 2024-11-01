@@ -4,6 +4,7 @@ import pandas
 import json
 import os
 from . import cols
+import copy
 
 
 DATA_NAMES = typing.Literal["pbp", "draft", "roster", "player", "schedule", "map"]
@@ -23,24 +24,28 @@ NFL_DATA_FUNCS = {
 # =======================
 
 CONFIG_PATH = os.path.join(os.path.dirname(__file__), "config.json")
+CONFIG_DATA = {}
 
 
-def _load_config_data() -> dict[str, str]:
+def _load_config_data():
     """
     Load the configuration data.
     """
-    config_data = {}
     with open(CONFIG_PATH, "r") as file:
         config_data = json.load(file)
-    return config_data
+        global CONFIG_DATA
+        CONFIG_DATA = copy.deepcopy(config_data)
 
 
-def _dump_config_data(config_data: dict[str, str]):
+_load_config_data()
+
+
+def _dump_config_data():
     """
     Dump the configuration data.
     """
     with open(CONFIG_PATH, "w") as file:
-        json.dump(config_data, file)
+        json.dump(CONFIG_DATA, file)
 
 
 def set_cache_path(path: str):
@@ -55,21 +60,12 @@ def set_cache_path(path: str):
     """
     if isinstance(path, str):
         if os.path.exists(path):
-            config_data = _load_config_data()
-            config_data["cache_dir"] = path
-            _dump_config_data(config_data)
+            CONFIG_DATA["cache_dir"] = path
+            _dump_config_data()
         else:
             raise ValueError(f'Path "{path}" does not exist.')
     else:
         raise ValueError("Path must be a string.")
-
-
-def _load_cache_path() -> str:
-    """
-    Load the cache path.
-    """
-    config_data = _load_config_data()
-    return config_data["cache_dir"]
 
 
 # =================
@@ -78,13 +74,13 @@ def _load_cache_path() -> str:
 
 
 def _load_cached(fname: str) -> pandas.DataFrame:
-    path = os.path.join(_load_cache_path(), fname + ".parq")
+    path = os.path.join(CONFIG_DATA["cache_dir"], fname + ".parq")
     df = pandas.read_parquet(path)
     return df
 
 
 def _dump_cached(df: pandas.DataFrame, fname: str):
-    path = os.path.join(_load_cache_path(), fname + ".parq")
+    path = os.path.join(CONFIG_DATA["cache_dir"], fname + ".parq")
     df.to_parquet(path)
 
 
@@ -108,7 +104,7 @@ def _load_metadata(data_name: DATA_NAMES) -> dict[int, bool] | bool:
 
     out : dict
     """
-    path = _load_cache_path() + "metadata.json"
+    path = CONFIG_DATA["cache_dir"] + "metadata.json"
     if os.path.exists(path):
         full_mdata = {}
         with open(path, "r") as file:
@@ -140,7 +136,7 @@ def _dump_metadata(data_name: DATA_NAMES, mdata: dict[int, bool] | bool):
     mdata : dict[int, bool] | bool
         The metadata to dump.
     """
-    path = os.path.join(_load_cache_path(), "metadata.json")
+    path = os.path.join(CONFIG_DATA["cache_dir"], "metadata.json")
     full_mdata = {}
     if os.path.exists(path):
         with open(path, "r") as file:
@@ -266,8 +262,8 @@ def _load_team_abbrs():
     """
     with open(TEAM_ABBRS_PATH, "r") as file:
         abbrs = json.load(file)
-        for abbr in abbrs:
-            TEAM_ABBRS[abbr] = abbrs[abbr]
+        global TEAM_ABBRS
+        TEAM_ABBRS = copy.deepcopy(abbrs)
 
 
 _load_team_abbrs()
