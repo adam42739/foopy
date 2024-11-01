@@ -1,3 +1,7 @@
+"""
+Module for creating cols files.
+"""
+
 import requests
 import pandas
 import io
