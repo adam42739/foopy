@@ -1,97 +1,9 @@
-class DraftId:
-    """
-    FooPy created draft ID. Not guaranteed to be unique.
-    """
-
-    header = "draft_id"
-
-
-class Weight:
-    """
-    Official weight, in pounds
-    """
-
-    header = "weight"
-
-
-class Height:
-    """
-    Official height, in inches
-    """
-
-    header = "height"
-
-
-class StatusDescriptionAbbr:
-    """
-    No description available.
-    """
-
-    header = "status_description_abbr"
-
-
-class EntryYear:
-    """
-    No description available.
-    """
-
-    header = "entry_year"
-
-
-class FirstName:
-    """
-    First name as per NFL.com
-    """
-
-    header = "first_name"
-
-
 class DraftNumber:
     """
     No description available.
     """
 
     header = "draft_number"
-
-
-class CurrentTeamId:
-    """
-    No description available.
-    """
-
-    header = "current_team_id"
-
-
-class GsisItId:
-    """
-    No description available.
-    """
-
-    header = "gsis_it_id"
-
-
-class Position:
-    """
-    Primary position as reported by NFL.com
-    """
-
-    header = "position"
-
-
-class CollegeConference:
-    """
-    No description available.
-    """
-
-    header = "college_conference"
-
-
-class FootballName:
-    """
-    No description available.
-    """
-
-    header = "football_name"
 
 
 class JerseyNumber:
@@ -102,20 +14,60 @@ class JerseyNumber:
     header = "jersey_number"
 
 
+class YearsOfExperience:
+    """
+    No description available.
+    """
+
+    header = "years_of_experience"
+
+
+class FootballName:
+    """
+    No description available.
+    """
+
+    header = "football_name"
+
+
+class PositionGroup:
+    """
+    No description available.
+    """
+
+    header = "position_group"
+
+
+class SmartId:
+    """
+    No description available.
+    """
+
+    header = "smart_id"
+
+
+class TeamSeq:
+    """
+    No description available.
+    """
+
+    header = "team_seq"
+
+
+class FirstName:
+    """
+    First name as per NFL.com
+    """
+
+    header = "first_name"
+
+
 class StatusShortDescription:
     """
     No description available.
     """
 
     header = "status_short_description"
-
-
-class RookieYear:
-    """
-    No description available.
-    """
-
-    header = "rookie_year"
 
 
 class DraftRound:
@@ -126,28 +78,52 @@ class DraftRound:
     header = "draft_round"
 
 
-class DraftClub:
+class EsbId:
     """
     No description available.
     """
 
-    header = "draft_club"
+    header = "esb_id"
 
 
-class Suffix:
+class Weight:
+    """
+    Official weight, in pounds
+    """
+
+    header = "weight"
+
+
+class EntryYear:
     """
     No description available.
     """
 
-    header = "suffix"
+    header = "entry_year"
 
 
-class Status:
+class DisplayName:
     """
-    Roster status: describes things like Active, Inactive, Injured Reserve, Practice Squad etc
+    No description available.
     """
 
-    header = "status"
+    header = "display_name"
+
+
+class StatusDescriptionAbbr:
+    """
+    No description available.
+    """
+
+    header = "status_description_abbr"
+
+
+class GsisId:
+    """
+    Game Stats and Info Service ID: the primary ID for play-by-play data.
+    """
+
+    header = "gsis_id"
 
 
 class Headshot:
@@ -166,36 +142,28 @@ class BirthDate:
     header = "birth_date"
 
 
-class DisplayName:
+class RookieYear:
     """
     No description available.
     """
 
-    header = "display_name"
+    header = "rookie_year"
 
 
-class PositionGroup:
+class Suffix:
     """
     No description available.
     """
 
-    header = "position_group"
+    header = "suffix"
 
 
-class CollegeName:
+class CollegeConference:
     """
     No description available.
     """
 
-    header = "college_name"
-
-
-class GsisId:
-    """
-    Game Stats and Info Service ID: the primary ID for play-by-play data.
-    """
-
-    header = "gsis_id"
+    header = "college_conference"
 
 
 class LastName:
@@ -206,36 +174,20 @@ class LastName:
     header = "last_name"
 
 
-class SmartId:
+class CollegeName:
     """
     No description available.
     """
 
-    header = "smart_id"
+    header = "college_name"
 
 
-class YearsOfExperience:
+class Height:
     """
-    No description available.
-    """
-
-    header = "years_of_experience"
-
-
-class TeamAbbr:
-    """
-    Official team abbreveation
+    Official height, in inches
     """
 
-    header = "team_abbr"
-
-
-class UniformNumber:
-    """
-    No description available.
-    """
-
-    header = "uniform_number"
+    header = "height"
 
 
 class ShortName:
@@ -246,17 +198,65 @@ class ShortName:
     header = "short_name"
 
 
-class EsbId:
+class CurrentTeamId:
     """
     No description available.
     """
 
-    header = "esb_id"
+    header = "current_team_id"
 
 
-class TeamSeq:
+class DraftClub:
     """
     No description available.
     """
 
-    header = "team_seq"
+    header = "draft_club"
+
+
+class Position:
+    """
+    Primary position as reported by NFL.com
+    """
+
+    header = "position"
+
+
+class TeamAbbr:
+    """
+    Official team abbreveation
+    """
+
+    header = "team_abbr"
+
+
+class GsisItId:
+    """
+    No description available.
+    """
+
+    header = "gsis_it_id"
+
+
+class UniformNumber:
+    """
+    No description available.
+    """
+
+    header = "uniform_number"
+
+
+class Status:
+    """
+    Roster status: describes things like Active, Inactive, Injured Reserve, Practice Squad etc
+    """
+
+    header = "status"
+
+
+class DraftId:
+    """
+    FooPy created draft ID. Not guaranteed to be unique.
+    """
+
+    header = "draft_id"

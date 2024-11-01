@@ -1,81 +1,9 @@
-class DraftId:
+class Season:
     """
-    FooPy created draft ID. Not guaranteed to be unique.
-    """
-
-    header = "draft_id"
-
-
-class RushAtts:
-    """
-    Career rushing attempts
+    4 digit number indicating to which season the game belongs to.
     """
 
-    header = "rush_atts"
-
-
-class PassYards:
-    """
-    Number of yards gained on pass plays
-    """
-
-    header = "pass_yards"
-
-
-class Allpro:
-    """
-    Number of AP First Team All-Pro selections as recorded by PFR
-    """
-
-    header = "allpro"
-
-
-class Pick:
-    """
-    Draft overall pick
-    """
-
-    header = "pick"
-
-
-class To:
-    """
-    Final season played in NFL
-    """
-
-    header = "to"
-
-
-class CarAv:
-    """
-    Career Approximate Value
-    """
-
-    header = "car_av"
-
-
-class Round:
-    """
-    Draft round
-    """
-
-    header = "round"
-
-
-class RushYards:
-    """
-    The number of rushing yards gained
-    """
-
-    header = "rush_yards"
-
-
-class Position:
-    """
-    Primary position as reported by NFL.com
-    """
-
-    header = "position"
+    header = "season"
 
 
 class RushTds:
@@ -86,20 +14,36 @@ class RushTds:
     header = "rush_tds"
 
 
-class Team:
+class PassYards:
     """
-    NFL team. Uses official abbreviations as per NFL.com
-    """
-
-    header = "team"
-
-
-class Games:
-    """
-    Games played in career
+    Number of yards gained on pass plays
     """
 
-    header = "games"
+    header = "pass_yards"
+
+
+class Probowls:
+    """
+    Number of Pro Bowls
+    """
+
+    header = "probowls"
+
+
+class PassAttempts:
+    """
+    Career pass attempts
+    """
+
+    header = "pass_attempts"
+
+
+class RecTds:
+    """
+    Career receiving touchdowns
+    """
+
+    header = "rec_tds"
 
 
 class RecYards:
@@ -118,132 +62,28 @@ class College:
     header = "college"
 
 
-class Hof:
+class DefSacks:
     """
-    Whether player has been selected to the Pro Football Hall of Fame
-    """
-
-    header = "hof"
-
-
-class RecTds:
-    """
-    Career receiving touchdowns
+    Career sacks
     """
 
-    header = "rec_tds"
+    header = "def_sacks"
 
 
-class PassTds:
+class Games:
     """
-    Career pass touchdowns thrown
-    """
-
-    header = "pass_tds"
-
-
-class Side:
-    """
-    O for offense, D for defense, S for special teams
+    Games played in career
     """
 
-    header = "side"
+    header = "games"
 
 
-class PassAttempts:
+class To:
     """
-    Career pass attempts
-    """
-
-    header = "pass_attempts"
-
-
-class Probowls:
-    """
-    Number of Pro Bowls
+    Final season played in NFL
     """
 
-    header = "probowls"
-
-
-class GsisId:
-    """
-    Game Stats and Info Service ID: the primary ID for play-by-play data.
-    """
-
-    header = "gsis_id"
-
-
-class Category:
-    """
-    Broader category of player positions
-    """
-
-    header = "category"
-
-
-class WAv:
-    """
-    Weighted Approximate Value
-    """
-
-    header = "w_av"
-
-
-class PfrPlayerName:
-    """
-    Player’s name as recorded by PFR
-    """
-
-    header = "pfr_player_name"
-
-
-class DrAv:
-    """
-    Draft Approximate Value
-    """
-
-    header = "dr_av"
-
-
-class PfrPlayerId:
-    """
-    ID from Pro Football Reference
-    """
-
-    header = "pfr_player_id"
-
-
-class Season:
-    """
-    4 digit number indicating to which season the game belongs to.
-    """
-
-    header = "season"
-
-
-class DefInts:
-    """
-    Career interceptions
-    """
-
-    header = "def_ints"
-
-
-class SeasonsStarted:
-    """
-    Number of seasons recorded as primary starter for position
-    """
-
-    header = "seasons_started"
-
-
-class PassCompletions:
-    """
-    Career pass completions
-    """
-
-    header = "pass_completions"
+    header = "to"
 
 
 class CfbPlayerId:
@@ -254,28 +94,108 @@ class CfbPlayerId:
     header = "cfb_player_id"
 
 
-class DefSacks:
+class PfrPlayerName:
     """
-    Career sacks
-    """
-
-    header = "def_sacks"
-
-
-class Age:
-    """
-    Age as of last pipeline build, rounded to one decimal. Pipeline is built on a weekly basis.
+    Player’s name as recorded by PFR
     """
 
-    header = "age"
+    header = "pfr_player_name"
 
 
-class Receptions:
+class DefSoloTackles:
     """
-    The number of receptions for the receiver
+    Career solo tackles
     """
 
-    header = "receptions"
+    header = "def_solo_tackles"
+
+
+class DefInts:
+    """
+    Career interceptions
+    """
+
+    header = "def_ints"
+
+
+class RushAtts:
+    """
+    Career rushing attempts
+    """
+
+    header = "rush_atts"
+
+
+class PassCompletions:
+    """
+    Career pass completions
+    """
+
+    header = "pass_completions"
+
+
+class RushYards:
+    """
+    The number of rushing yards gained
+    """
+
+    header = "rush_yards"
+
+
+class DrAv:
+    """
+    Draft Approximate Value
+    """
+
+    header = "dr_av"
+
+
+class Side:
+    """
+    O for offense, D for defense, S for special teams
+    """
+
+    header = "side"
+
+
+class GsisId:
+    """
+    Game Stats and Info Service ID: the primary ID for play-by-play data.
+    """
+
+    header = "gsis_id"
+
+
+class WAv:
+    """
+    Weighted Approximate Value
+    """
+
+    header = "w_av"
+
+
+class CarAv:
+    """
+    Career Approximate Value
+    """
+
+    header = "car_av"
+
+
+class PassTds:
+    """
+    Career pass touchdowns thrown
+    """
+
+    header = "pass_tds"
+
+
+class Allpro:
+    """
+    Number of AP First Team All-Pro selections as recorded by PFR
+    """
+
+    header = "allpro"
 
 
 class PassInts:
@@ -286,9 +206,89 @@ class PassInts:
     header = "pass_ints"
 
 
-class DefSoloTackles:
+class Receptions:
     """
-    Career solo tackles
+    The number of receptions for the receiver
     """
 
-    header = "def_solo_tackles"
+    header = "receptions"
+
+
+class Category:
+    """
+    Broader category of player positions
+    """
+
+    header = "category"
+
+
+class Age:
+    """
+    Age as of last pipeline build, rounded to one decimal. Pipeline is built on a weekly basis.
+    """
+
+    header = "age"
+
+
+class Position:
+    """
+    Primary position as reported by NFL.com
+    """
+
+    header = "position"
+
+
+class Team:
+    """
+    NFL team. Uses official abbreviations as per NFL.com
+    """
+
+    header = "team"
+
+
+class Hof:
+    """
+    Whether player has been selected to the Pro Football Hall of Fame
+    """
+
+    header = "hof"
+
+
+class Round:
+    """
+    Draft round
+    """
+
+    header = "round"
+
+
+class Pick:
+    """
+    Draft overall pick
+    """
+
+    header = "pick"
+
+
+class PfrPlayerId:
+    """
+    ID from Pro Football Reference
+    """
+
+    header = "pfr_player_id"
+
+
+class SeasonsStarted:
+    """
+    Number of seasons recorded as primary starter for position
+    """
+
+    header = "seasons_started"
+
+
+class DraftId:
+    """
+    FooPy created draft ID. Not guaranteed to be unique.
+    """
+
+    header = "draft_id"

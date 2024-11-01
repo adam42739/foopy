@@ -1,25 +1,9 @@
-class SwishId:
+class Name:
     """
-    Player ID for Swish Analytics
-    """
-
-    header = "swish_id"
-
-
-class Position:
-    """
-    Primary position as reported by NFL.com
+    Name of the 'passer' if it is not 'NA', or name of the 'rusher' otherwise.
     """
 
-    header = "position"
-
-
-class College:
-    """
-    Official college (usually the last one attended)
-    """
-
-    header = "college"
+    header = "name"
 
 
 class FleaflickerId:
@@ -30,12 +14,12 @@ class FleaflickerId:
     header = "fleaflicker_id"
 
 
-class YahooId:
+class College:
     """
-    Player ID for Yahoo API
+    Official college (usually the last one attended)
     """
 
-    header = "yahoo_id"
+    header = "college"
 
 
 class EspnId:
@@ -46,36 +30,12 @@ class EspnId:
     header = "espn_id"
 
 
-class Age:
+class FantasyDataId:
     """
-    Age as of last pipeline build, rounded to one decimal. Pipeline is built on a weekly basis.
-    """
-
-    header = "age"
-
-
-class Weight:
-    """
-    Official weight, in pounds
+    Player ID for FantasyData
     """
 
-    header = "weight"
-
-
-class CfbrefId:
-    """
-    College Football Reference ID - usual format is firstname-lastname-integer
-    """
-
-    header = "cfbref_id"
-
-
-class SleeperId:
-    """
-    Player ID for Sleeper API
-    """
-
-    header = "sleeper_id"
+    header = "fantasy_data_id"
 
 
 class DraftRound:
@@ -86,6 +46,62 @@ class DraftRound:
     header = "draft_round"
 
 
+class YahooId:
+    """
+    Player ID for Yahoo API
+    """
+
+    header = "yahoo_id"
+
+
+class DraftPick:
+    """
+    Draft pick within round, i.e. 32nd pick of second round.
+    """
+
+    header = "draft_pick"
+
+
+class DraftYear:
+    """
+    Year of draft. Zero if unknown/undrafted.
+    """
+
+    header = "draft_year"
+
+
+class RotowireId:
+    """
+    Player ID for Rotowire
+    """
+
+    header = "rotowire_id"
+
+
+class PffId:
+    """
+    Player ID for Pro Football Focus
+    """
+
+    header = "pff_id"
+
+
+class Weight:
+    """
+    Official weight, in pounds
+    """
+
+    header = "weight"
+
+
+class SleeperId:
+    """
+    Player ID for Sleeper API
+    """
+
+    header = "sleeper_id"
+
+
 class StatsGlobalId:
     """
     Stats Global ID - usual format is a six digit integer
@@ -94,12 +110,12 @@ class StatsGlobalId:
     header = "stats_global_id"
 
 
-class KtcId:
+class MergeName:
     """
-    KeepTradeCut ID - usual format is an integer with ~four digits.
+    Name but formatted for name joins via ffscrapr::dp_cleannames() - coerced to lowercase, stripped of punctuation and suffixes, and common substitutions performed.
     """
 
-    header = "ktc_id"
+    header = "merge_name"
 
 
 class RotoworldId:
@@ -110,28 +126,28 @@ class RotoworldId:
     header = "rotoworld_id"
 
 
-class CbsId:
+class MflId:
     """
-    CBS ID - usual format is an integer with ~ 7 digits.
-    """
-
-    header = "cbs_id"
-
-
-class StatsId:
-    """
-    Stats ID - usual format is five digit integer
+    MyFantasyLeague.com ID - this is the primary key for this table and is unique and complete. Usually an integer of 5 digits.
     """
 
-    header = "stats_id"
+    header = "mfl_id"
 
 
-class Team:
+class GsisId:
     """
-    NFL team. Uses official abbreviations as per NFL.com
+    Game Stats and Info Service ID: the primary ID for play-by-play data.
     """
 
-    header = "team"
+    header = "gsis_id"
+
+
+class KtcId:
+    """
+    KeepTradeCut ID - usual format is an integer with ~four digits.
+    """
+
+    header = "ktc_id"
 
 
 class FantasyprosId:
@@ -150,84 +166,12 @@ class NflId:
     header = "nfl_id"
 
 
-class GsisId:
+class CbsId:
     """
-    Game Stats and Info Service ID: the primary ID for play-by-play data.
-    """
-
-    header = "gsis_id"
-
-
-class FantasyDataId:
-    """
-    Player ID for FantasyData
+    CBS ID - usual format is an integer with ~ 7 digits.
     """
 
-    header = "fantasy_data_id"
-
-
-class Height:
-    """
-    Official height, in inches
-    """
-
-    header = "height"
-
-
-class MergeName:
-    """
-    Name but formatted for name joins via ffscrapr::dp_cleannames() - coerced to lowercase, stripped of punctuation and suffixes, and common substitutions performed.
-    """
-
-    header = "merge_name"
-
-
-class SportradarId:
-    """
-    Player ID for Sportradar API
-    """
-
-    header = "sportradar_id"
-
-
-class MflId:
-    """
-    MyFantasyLeague.com ID - this is the primary key for this table and is unique and complete. Usually an integer of 5 digits.
-    """
-
-    header = "mfl_id"
-
-
-class DbSeason:
-    """
-    Year of database build. Previous years may also be available via dynastyprocess.
-    """
-
-    header = "db_season"
-
-
-class DraftOvr:
-    """
-    Overall draft pick selection. This can be a little bit patchy, since MFL does not report this number.
-    """
-
-    header = "draft_ovr"
-
-
-class Birthdate:
-    """
-    Birthdate
-    """
-
-    header = "birthdate"
-
-
-class DraftYear:
-    """
-    Year of draft. Zero if unknown/undrafted.
-    """
-
-    header = "draft_year"
+    header = "cbs_id"
 
 
 class PfrId:
@@ -238,6 +182,14 @@ class PfrId:
     header = "pfr_id"
 
 
+class SwishId:
+    """
+    Player ID for Swish Analytics
+    """
+
+    header = "swish_id"
+
+
 class TwitterUsername:
     """
     Official twitter handle, if known
@@ -246,33 +198,81 @@ class TwitterUsername:
     header = "twitter_username"
 
 
-class DraftPick:
+class DbSeason:
     """
-    Draft pick within round, i.e. 32nd pick of second round.
-    """
-
-    header = "draft_pick"
-
-
-class RotowireId:
-    """
-    Player ID for Rotowire
+    Year of database build. Previous years may also be available via dynastyprocess.
     """
 
-    header = "rotowire_id"
+    header = "db_season"
 
 
-class Name:
+class SportradarId:
     """
-    Name of the 'passer' if it is not 'NA', or name of the 'rusher' otherwise.
-    """
-
-    header = "name"
-
-
-class PffId:
-    """
-    Player ID for Pro Football Focus
+    Player ID for Sportradar API
     """
 
-    header = "pff_id"
+    header = "sportradar_id"
+
+
+class Height:
+    """
+    Official height, in inches
+    """
+
+    header = "height"
+
+
+class Birthdate:
+    """
+    Birthdate
+    """
+
+    header = "birthdate"
+
+
+class DraftOvr:
+    """
+    Overall draft pick selection. This can be a little bit patchy, since MFL does not report this number.
+    """
+
+    header = "draft_ovr"
+
+
+class Age:
+    """
+    Age as of last pipeline build, rounded to one decimal. Pipeline is built on a weekly basis.
+    """
+
+    header = "age"
+
+
+class Position:
+    """
+    Primary position as reported by NFL.com
+    """
+
+    header = "position"
+
+
+class Team:
+    """
+    NFL team. Uses official abbreviations as per NFL.com
+    """
+
+    header = "team"
+
+
+class StatsId:
+    """
+    Stats ID - usual format is five digit integer
+    """
+
+    header = "stats_id"
+
+
+class CfbrefId:
+    """
+    College Football Reference ID - usual format is firstname-lastname-integer
+    """
+
+    header = "cfbref_id"
