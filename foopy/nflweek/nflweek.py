@@ -1,5 +1,22 @@
 import json
 import os
+import datetime
+
+
+# ==============
+# Current Season
+# ==============
+
+
+def _current_season() -> int:
+    today = datetime.datetime.today()
+    if today.month <= 2 and today.date <= 20:
+        return today.year - 1
+    else:
+        return today.year
+
+
+CURRENT_SEASON = _current_season()
 
 
 # =======================
@@ -53,7 +70,7 @@ class NFLWeek:
     =======
     NFLWeek
     =======
-    
+
     Simple class for keeping track of NFL weeks.
     """
 
