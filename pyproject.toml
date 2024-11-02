@@ -1,0 +1,25 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+
+[project]
+name = "foopy"
+authors = [{name = "Adam Lynch", email = "aclynch@umich.edu"}]
+description = "Football analytics library"
+readme = "README.md"
+license = {text = "MIT License"}
+version = "0.1.0"
+requires-python = ">=3.11"
+dependencies = [
+    "lxml >= 5.3.0",
+    "pandas >= 1.5.3",
+    "requests >= 2.32.3",
+    "tqdm >= 4.66.6",
+    "nfl_data_py >= 0.3.3"
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest"
+]
