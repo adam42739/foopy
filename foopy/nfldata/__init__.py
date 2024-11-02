@@ -18,6 +18,5 @@ Functions
     Player ID mapping class.
 """
 
-from .nfldata import set_cache_path
-from .nfldata import load
+from .nfldata import set_cache_path, load
 from .playermap import PlayerMap

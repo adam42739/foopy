@@ -21,9 +21,4 @@ cols.draft.RushAtts.header
 ```
 """
 
-from . import draft
-from . import pbp
-from . import player
-from . import roster
-from . import schedule
-from . import map
+from . import draft, pbp, player, roster, schedule, map

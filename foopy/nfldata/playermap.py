@@ -1,13 +1,9 @@
 from .idmap import IDMap
-from .nfldata import CONFIG_DATA
+from .nfldata import CONFIG_DATA, FIRST_SEASON, DATA_NAMES, ID_COLUMNS, load
 import os
 import pandas
-from .nfldata import load
 import json
 from ..nflweek import CURRENT_SEASON
-from .nfldata import FIRST_SEASON
-from .nfldata import DATA_NAMES
-from .nfldata import ID_COLUMNS
 
 
 # ===================
