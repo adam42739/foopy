@@ -7,6 +7,9 @@ from . import cols
 import copy
 
 
+FIRST_SEASON = 2002
+
+
 DATA_NAMES = typing.Literal["pbp", "draft", "roster", "player", "schedule", "map"]
 DATA_NAMES_VALUES = {"pbp", "draft", "roster", "player", "schedule", "map"}
 YEARS_DATA_NAMES = {"pbp", "draft", "roster", "schedule"}
@@ -467,7 +470,8 @@ def _string_all_IDs(data_name: DATA_NAMES, df: pandas.DataFrame) -> pandas.DataF
     Ensure all ID related columns are dtype string.
     """
     for column in ID_COLUMNS[data_name]:
-        df[column] = df[column].astype(str)
+        notna = df[column].notna()
+        df.loc[notna, column] = df.loc[notna, column].astype(str)
     return df
 
 

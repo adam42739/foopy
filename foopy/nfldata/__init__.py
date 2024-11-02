@@ -12,7 +12,12 @@ Functions
 * `load()`
 
     Load NFL data.
+
+* class: `PlayerMap`
+
+    Player ID mapping class.
 """
 
 from .nfldata import set_cache_path
 from .nfldata import load
+from .playermap import PlayerMap

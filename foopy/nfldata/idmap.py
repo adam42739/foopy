@@ -21,11 +21,11 @@ class IDMap:
         Load the `IDMap` from the given file path.
         """
         if isinstance(dir_path, str) and isinstance(fname, str):
-            df_path = os.path.join(dir_path, fname, "-df.csv")
-            append_path = os.path.join(dir_path, fname, "-append.csv")
+            df_path = os.path.join(dir_path, fname + "-df.parq")
+            append_path = os.path.join(dir_path, fname + "-append.parq")
             if os.path.exists(df_path) and os.path.exists(append_path):
-                self.df = pandas.read_csv(df_path, dtype=str)
-                self.append_df = pandas.read_csv(append_path, dtype=str)
+                self.df = pandas.read_parquet(df_path)
+                self.append_df = pandas.read_parquet(append_path)
             else:
                 raise ValueError(f'Path "{df_path}" does not exist.')
         else:
@@ -36,10 +36,10 @@ class IDMap:
         Dump the `IDMap` to the given file path.
         """
         if isinstance(dir_path, str) and isinstance(fname, str):
-            df_path = os.path.join(dir_path, fname, "-df.csv")
-            append_path = os.path.join(dir_path, fname, "-append.csv")
-            self.df.to_csv(df_path)
-            self.append_df.to_csv(append_path)
+            df_path = os.path.join(dir_path, fname + "-df.parq")
+            append_path = os.path.join(dir_path, fname + "-append.parq")
+            self.df.to_parquet(df_path)
+            self.append_df.to_parquet(append_path)
         else:
             raise ValueError("Path must be a string")
 
@@ -47,7 +47,7 @@ class IDMap:
     # Data Manipulation Functions
     # ===========================
 
-    def append(self, new_maps: pandas.DataFrame):
+    def append(self, new_maps: pandas.DataFrame, part: int, total: int):
         """
         Append a `DataFrame` of new maps to the `IDMap`.
 
@@ -57,13 +57,22 @@ class IDMap:
         new_maps : DataFrame
             New maps to append.
         """
+        pbar = tqdm.tqdm(total=7, desc=f"Appending {part} / {total}")
         self.append_df = pandas.concat([self.append_df, new_maps])
+        pbar.update()
         dupes_mask = self.append_df.duplicated(keep=False)
+        pbar.update()
         dupes = self.append_df[dupes_mask]
+        pbar.update()
         dupes = dupes.drop_duplicates()
+        pbar.update()
         self.append_df = self.append_df.drop_duplicates().reset_index(drop=True)
+        pbar.update()
         new_maps = pandas.concat([new_maps, dupes]).drop_duplicates(keep=False)
+        pbar.update()
         self.df = pandas.concat([self.df, new_maps]).reset_index(drop=True)
+        pbar.update()
+        pbar.close()
 
     # =================
     # Maptize Functions
@@ -89,12 +98,14 @@ class IDMap:
         else:
             return pandas.DataFrame()
 
-    def _maptize_by_column(self, column: str):
+    def _maptize_by_column(self, column: str, number: int, total: int):
         """
         Maptize a single column given by `column`.
         """
         dupes_df = self._get_column_dupes_df(column)
-        for id_value in dupes_df[column].unique():
+        for id_value in tqdm.tqdm(
+            dupes_df[column].unique(), desc=f"Maptizing {number} / {total}"
+        ):
             id_value_df = self._get_id_value_df(dupes_df, column, id_value)
             if not id_value_df.empty:
                 new_series = pandas.Series(
@@ -110,8 +121,10 @@ class IDMap:
         """
         Maptize the `IDMap`.
         """
-        for column in tqdm.tqdm(map_columns, desc="Maptizing"):
-            self._maptize_by_column(column)
+        count = 1
+        for column in map_columns:
+            self._maptize_by_column(column, count, len(map_columns))
+            count += 1
 
     # =============
     # Magic Methods
