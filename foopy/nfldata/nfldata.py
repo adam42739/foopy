@@ -468,7 +468,7 @@ ID_COLUMNS = {
 }
 
 
-def _string_all_IDs(data_name: DATA_NAMES, df: pandas.DataFrame) -> pandas.DataFrame:
+def _clean_IDs(data_name: DATA_NAMES, df: pandas.DataFrame) -> pandas.DataFrame:
     """
     Ensure all ID related columns are dtype string.
     """
@@ -478,6 +478,7 @@ def _string_all_IDs(data_name: DATA_NAMES, df: pandas.DataFrame) -> pandas.DataF
             df.loc[notna, column] = df.loc[notna, column].astype(int).astype(str)
         else:
             df.loc[notna, column] = df.loc[notna, column].astype(str)
+        df[column] = df[column].replace("", None)
     return df
 
 
@@ -530,5 +531,5 @@ def load(
         df = _load_non_years(data_name, update, mdata)
     if data_name in DRAFT_IDS_DATA_NAMES_VALUES:
         df = _create_draft_id(data_name, df)
-    df = _string_all_IDs(data_name, df)
+    df = _clean_IDs(data_name, df)
     return df
