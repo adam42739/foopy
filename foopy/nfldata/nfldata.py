@@ -439,7 +439,7 @@ MAP_ID_COLUMNS = {
     "rotoworld_id": int,
     "cfbref_id": str,
     "ktc_id": int,
-    "nfl_id": str,  # fix
+    "nfl_id": str,
     "gsis_id": str,
     "rotowire_id": int,
     "pfr_id": str,
