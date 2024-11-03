@@ -4,6 +4,7 @@ import os
 import pandas
 import json
 from ..nflweek import CURRENT_SEASON
+import tqdm
 
 
 # ===================
@@ -56,7 +57,7 @@ class PlayerMap(IDMap):
             json.dump(self.metadata, file)
         super().dump(CONFIG_DATA["cache_dir"], "playermap")
 
-    def _update_years(self, data_name: DATA_NAMES, part: int, total: int):
+    def _update_years(self, data_name: DATA_NAMES, pbar: tqdm.tqdm):
         """
         Update the map with data from years functions.
         """
@@ -67,24 +68,28 @@ class PlayerMap(IDMap):
                 years.append(year)
         df = load(data_name, years, True)[ID_COLUMNS[data_name]]
         df = _correct_id_alias(data_name, df)
-        self.append(df, part, total)
+        pbar.update()
+        self.append(df, pbar)
 
-    def _update_non_year(self, data_name: DATA_NAMES, part: int, total: int):
+    def _update_non_year(self, data_name: DATA_NAMES, pbar: tqdm.tqdm):
         """
         Update the map with data from non-years functions.
         """
         df = load(data_name, update=True)[ID_COLUMNS[data_name]]
         df = _correct_id_alias(data_name, df)
-        self.append(df, part, total)
+        pbar.update()
+        self.append(df, pbar)
 
     def update(self):
         """
         Update the `PlayerMap` with the most current data.
         """
-        self._update_years("draft", 1, 4)
-        self._update_years("roster", 2, 4)
-        self._update_non_year("player", 3, 4)
-        self._update_non_year("map", 4, 4)
+        pbar = tqdm.tqdm(total=8 * 4, desc="Appending")
+        self._update_years("draft", pbar)
+        self._update_years("roster", pbar)
+        self._update_non_year("player", pbar)
+        self._update_non_year("map", pbar)
+        pbar.close()
         self.maptize()
 
     def maptize(self):

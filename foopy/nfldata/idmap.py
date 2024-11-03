@@ -47,7 +47,7 @@ class IDMap:
     # Data Manipulation Functions
     # ===========================
 
-    def append(self, new_maps: pandas.DataFrame, part: int, total: int):
+    def append(self, new_maps: pandas.DataFrame, pbar: tqdm.tqdm):
         """
         Append a `DataFrame` of new maps to the `IDMap`.
 
@@ -57,7 +57,6 @@ class IDMap:
         new_maps : DataFrame
             New maps to append.
         """
-        pbar = tqdm.tqdm(total=7, desc=f"Appending {part} / {total}")
         self.append_df = pandas.concat([self.append_df, new_maps])
         pbar.update()
         dupes_mask = self.append_df.duplicated(keep=False)
@@ -72,7 +71,6 @@ class IDMap:
         pbar.update()
         self.df = pandas.concat([self.df, new_maps]).reset_index(drop=True)
         pbar.update()
-        pbar.close()
 
     # =================
     # Maptize Functions
