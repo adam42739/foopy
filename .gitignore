@@ -1,4 +1,4 @@
 /foopy_dev_env
 **/__pycache__
-/test*.py
+/test*.*
 /cache

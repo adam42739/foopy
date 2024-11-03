@@ -306,9 +306,10 @@ def _create_draft_id(
     name = None
     if data_name == "draft":
         team = df[cols.draft.Team.header]
-        round = df[cols.draft.Round.header].fillna(0)
+        round_ = df[cols.draft.Round.header].fillna(0)
         pick = df[cols.draft.Pick.header].fillna(0)
-        overall = pick * round
+        pick_less_32 = pick <= 32
+        overall = ((pick_less_32) * (pick * round_)) + ((~pick_less_32) * pick)
         name = df[cols.draft.PfrPlayerName.header]
     elif data_name == "player":
         team = df[cols.player.DraftClub.header]
