@@ -337,43 +337,45 @@ def _create_draft_id(
 # ID Column Cleaning
 # ==================
 
-DRAFT_ID_COLUMNS = [
-    "gsis_id",
-    "pfr_player_id",
-    "cfb_player_id",
-    "draft_id",
-]
-ROSTER_ID_COLUMNS = [
-    "player_id",
-    "espn_id",
-    "sportradar_id",
-    "yahoo_id",
-    "rotowire_id",
-    "pff_id",
-    "pfr_id",
-    "fantasy_data_id",
-    "sleeper_id",
-    "esb_id",
-    "gsis_it_id",
-    "smart_id",
-    "draft_id",
-]
-PLAYER_ID_COLUMNS = [
-    "esb_id",
-    "gsis_id",
-    "current_team_id",
-    "gsis_it_id",
-    "smart_id",
-    "draft_id",
-]
-SCHEDULE_ID_COLUMNS = [
-    "game_id",
-    "old_game_id",
-    "nfl_detail_id",
-    "away_qb_id",
-    "home_qb_id",
-    "stadium_id",
-]
+# TODO fix pbp
+
+DRAFT_ID_COLUMNS = {
+    "gsis_id": str,
+    "pfr_player_id": str,
+    "cfb_player_id": str,
+    "draft_id": str,
+}
+ROSTER_ID_COLUMNS = {
+    "player_id": str,
+    "espn_id": int,
+    "sportradar_id": str,
+    "yahoo_id": int,
+    "rotowire_id": int,
+    "pff_id": int,
+    "pfr_id": str,
+    "fantasy_data_id": int,
+    "sleeper_id": int,
+    "esb_id": str,
+    "gsis_it_id": int,
+    "smart_id": str,
+    "draft_id": str,
+}
+PLAYER_ID_COLUMNS = {
+    "esb_id": str,
+    "gsis_id": str,
+    "current_team_id": int,
+    "gsis_it_id": int,
+    "smart_id": str,
+    "draft_id": str,
+}
+SCHEDULE_ID_COLUMNS = {
+    "game_id": str,
+    "old_game_id": int,
+    "nfl_detail_id": str,
+    "away_qb_id": str,
+    "home_qb_id": str,
+    "stadium_id": str,
+}
 PBP_ID_COLUMNS = [
     "play_id",
     "game_id",
@@ -433,28 +435,28 @@ PBP_ID_COLUMNS = [
     "nflverse_game_id",
     "old_game_id_y",
 ]
-MAP_ID_COLUMNS = [
-    "rotoworld_id",
-    "cfbref_id",
-    "ktc_id",
-    "nfl_id",
-    "gsis_id",
-    "rotowire_id",
-    "pfr_id",
-    "pff_id",
-    "yahoo_id",
-    "fantasypros_id",
-    "swish_id",
-    "mfl_id",
-    "sportradar_id",
-    "sleeper_id",
-    "fantasy_data_id",
-    "espn_id",
-    "stats_id",
-    "cbs_id",
-    "stats_global_id",
-    "fleaflicker_id",
-]
+MAP_ID_COLUMNS = {
+    "rotoworld_id": int,
+    "cfbref_id": str,
+    "ktc_id": int,
+    "nfl_id": str,  # fix
+    "gsis_id": str,
+    "rotowire_id": int,
+    "pfr_id": str,
+    "pff_id": int,
+    "yahoo_id": int,
+    "fantasypros_id": int,
+    "swish_id": int,
+    "mfl_id": int,
+    "sportradar_id": str,
+    "sleeper_id": int,
+    "fantasy_data_id": int,
+    "espn_id": int,
+    "stats_id": int,
+    "cbs_id": int,
+    "stats_global_id": int,
+    "fleaflicker_id": int,
+}
 
 ID_COLUMNS = {
     "pbp": PBP_ID_COLUMNS,
@@ -471,8 +473,11 @@ def _string_all_IDs(data_name: DATA_NAMES, df: pandas.DataFrame) -> pandas.DataF
     Ensure all ID related columns are dtype string.
     """
     for column in ID_COLUMNS[data_name]:
-        notna = df[column].notna()
-        df.loc[notna, column] = df.loc[notna, column].astype(str)
+        notna = df[column].notna() & (df[column] != "")
+        if ID_COLUMNS[data_name][column] == int:
+            df.loc[notna, column] = df.loc[notna, column].astype(int).astype(str)
+        else:
+            df.loc[notna, column] = df.loc[notna, column].astype(str)
     return df
 
 

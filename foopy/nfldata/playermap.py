@@ -66,7 +66,7 @@ class PlayerMap(IDMap):
             if year not in self.metadata[data_name] or year == CURRENT_SEASON:
                 self.metadata[data_name][year] = True
                 years.append(year)
-        df = load(data_name, years, True)[ID_COLUMNS[data_name]]
+        df = load(data_name, years, True)[ID_COLUMNS[data_name].keys()]
         df = _correct_id_alias(data_name, df)
         pbar.update()
         self.append(df, pbar)
@@ -75,7 +75,7 @@ class PlayerMap(IDMap):
         """
         Update the map with data from non-years functions.
         """
-        df = load(data_name, update=True)[ID_COLUMNS[data_name]]
+        df = load(data_name, update=True)[ID_COLUMNS[data_name].keys()]
         df = _correct_id_alias(data_name, df)
         pbar.update()
         self.append(df, pbar)
