@@ -29,6 +29,9 @@ def _correct_id_alias(data_name: DATA_NAMES, df: pandas.DataFrame) -> pandas.Dat
 # ================
 
 
+MAP_COLUMNS = {"esb_id", "gsis_id", "cfbref_id", "pfr_id", "draft_id"}
+
+
 class PlayerMap(IDMap):
     def __init__(self):
         self.metadata = {"draft": {}, "roster": {}}
@@ -66,7 +69,8 @@ class PlayerMap(IDMap):
             if year not in self.metadata[data_name] or year == CURRENT_SEASON:
                 self.metadata[data_name][year] = True
                 years.append(year)
-        df = load(data_name, years, True)[ID_COLUMNS[data_name].keys()]
+        map_columns = list(set(ID_COLUMNS[data_name].keys()).intersection(MAP_COLUMNS))
+        df = load(data_name, years, True)[map_columns]
         df = _correct_id_alias(data_name, df)
         pbar.update()
         self.append(df, pbar)
@@ -75,7 +79,8 @@ class PlayerMap(IDMap):
         """
         Update the map with data from non-years functions.
         """
-        df = load(data_name, update=True)[ID_COLUMNS[data_name].keys()]
+        map_columns = list(set(ID_COLUMNS[data_name].keys()).intersection(MAP_COLUMNS))
+        df = load(data_name, update=True)[map_columns]
         df = _correct_id_alias(data_name, df)
         pbar.update()
         self.append(df, pbar)
@@ -93,5 +98,4 @@ class PlayerMap(IDMap):
         self.maptize()
 
     def maptize(self):
-        MAP_COLUMNS = ["esb_id", "gsis_id", "cfbref_id", "pfr_id", "draft_id"]
         super().maptize(MAP_COLUMNS)
